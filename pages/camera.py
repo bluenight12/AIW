@@ -31,10 +31,13 @@ def main():
                 break
             elif shutter_button_pressed:
                 cv2.imwrite("Cam.jpg", cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+                st.session_state.image = frame
                 shutter_button_pressed = False
     cap.release()
     cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
+    if 'image' not in st.session_state:
+        st.session_state.image = ""
     main()
