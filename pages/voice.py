@@ -32,5 +32,10 @@ def recognize_and_save_text(output_file):
             return list("Google Speech Recognition 서비스에 접근할 수 없습니다; {0}".format(e))
         
 def main():
+    st.set_page_config(page_title="Streamlit WebCam App")
     st.title("Voice Test")
+    text_button_pressed = st.button()
+    if text_button_pressed:
+        recognize_and_save_text("text.txt")
+        text_button_pressed = False
     

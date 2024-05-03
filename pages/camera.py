@@ -1,6 +1,6 @@
 import streamlit as st
 import cv2
-
+from streamlit_extras.switch_page_button import switch_page
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
@@ -14,9 +14,11 @@ def main():
         start_button_pressed = st.button("시작")
     with col2:
         next_button_pressed = st.button("넘어가기")
-    shutter_button_pressed = st.link_button("촬영", "/pages/voice.py")  # 자동 촬영으로 바꾸기
+    shutter_button_pressed = st.button("촬영")  # 자동 촬영으로 바꾸기
     if start_button_pressed:
         pass
+    if next_button_pressed:
+        switch_page("voice")
     while cap.isOpened() and not next_button_pressed:
         ret, frame = cap.read()
         if not ret:
