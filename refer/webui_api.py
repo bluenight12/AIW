@@ -93,19 +93,19 @@ class Create_image :
         batch_size = 2                      # 이미지 생성 갯수
         payload = {
             "prompt": prom,
-            "negative_prompt": "(worst quality, greyscale), ac_neg2, zip2d_neg, ziprealism_neg, watermark, username, signature, text, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck",
+            # "negative_prompt": "(worst quality, greyscale), ac_neg2, zip2d_neg, ziprealism_neg, watermark, username, signature, text, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck",
             "seed": -1,                         ## 시드 난수로
             "steps": 40,
-            # "width": 512,
-            # "height": 512,
-            # "image_cfg_scale": 0.5,
+            "width": 512,
+            "height": 512,
+            "image_cfg_scale": 0.5,
             "denoising_strength": 0.75,          ## 이수치를 줄이면 기존이미지와 많이 멀어짐 .
             "n_iter": 1,
             "init_images": init_images,
             "batch_size": batch_size if len(init_images) == 1 else len(init_images),
             "cfg_scale": 7,
-            "sampler_name": "DPM++ 2m",  ##  샘플링 방법을 결정하는 설정입니다.
-            "scheduler": "karras",  ## 학습 스케줄러를 설정하는 부분입니다.
+            "sampler_name": "DPM++ 2M",  ##  샘플링 방법을 결정하는 설정입니다.
+            "scheduler": "Karras",  ## 학습 스케줄러를 설정하는 부분입니다.
             "mask": self.encode_file_to_base64(mask_img_path)
         }
         self.call_img2img_api(**payload)
@@ -189,3 +189,10 @@ class Create_image :
         # there exist a useful extension that allows converting of webui calls to api payload
         # particularly useful when you wish setup arguments of extensions and scripts
         # https://github.com/huchenlei/sd-webui-api-payload-display
+
+####
+# test
+
+# aa = Create_image()
+#
+# aa.i2i(".\\1.jpg",".\\1.png","t-shirt")
