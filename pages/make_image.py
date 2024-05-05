@@ -4,6 +4,7 @@ import cv2
 import streamlit as st
 from refer import webui_api as api
 from util import Clothes_Segmentation as cs
+import time
 def Recent_file():
     files = glob.glob('api_out/img2img/img2img-*.png')
     recent_file = max(files, key=os.path.getmtime)
@@ -22,8 +23,13 @@ def main():
     text = st.session_state.get("text")
     frame_placeholder = st.empty()
     make_button_pressed = st.button("이미지 만들기",  args=("Hi",))
-
-
+    
+    cols = st.columns(3)
+    container1 = cols[0].container(height=120)
+    container1.write('Meow' + ' meow'*1000)
+    cols[1].write('Meow' + ' meow'*1000)
+    cols[2].write('Meow' + ' meow'*1000)
+        
 
     if make_button_pressed:
         Make_img()
