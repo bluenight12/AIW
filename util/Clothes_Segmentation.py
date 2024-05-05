@@ -1,10 +1,10 @@
-def Cloths_seg():
+def Cloths_seg(test_image_url, output_mask_path):
     import cv2
     import requests
     import numpy as np
     import openvino as ov
     import ipywidgets as widgets
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
     from pathlib import Path
     from typing import Tuple
     from notebook_utils import load_image
@@ -39,7 +39,7 @@ def Cloths_seg():
     compiled_model = core.compile_model(ov_model, device.value)
 
     # Read input image and convert it to RGB
-    test_image_url = "C:\\Users\\admin\\Documents\\test_git\\AIW\\test_img\\test.jpg"
+    # test_image_url = "C:\\Users\\admin\\Documents\\test_git\\AIW\\test_img\\test.jpg"
     img = load_image(test_image_url)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -155,9 +155,9 @@ def Cloths_seg():
     # Return the "Portrait mask" image
     portrait_mask_image = images[portrait_mask_index]
     # 이미지를 저장할 경로 지정
-    output_mask_path = "C:\\Users\\admin\\Documents\\test_git\\AIW\\test_img\\output_mask.jpg"
+    # output_mask_path = "C:\\Users\\admin\\Documents\\test_git\\AIW\\test_img\\output_mask.jpg"
     # 세그멘테이션된 이미지 저장
     cv2.imwrite(output_mask_path, output_mask)
 
 
-Cloths_seg()
+# Cloths_seg()
