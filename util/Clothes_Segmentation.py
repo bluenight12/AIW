@@ -7,9 +7,9 @@ def Cloths_seg(test_image_url, output_mask_path):
     # import matplotlib.pyplot as plt
     from pathlib import Path
     from typing import Tuple
-    from notebook_utils import load_image
-    from notebook_utils import download_file
-    from notebook_utils import segmentation_map_to_image, SegmentationMap, Label
+    from util.notebook_utils import load_image
+    from util.notebook_utils import download_file
+    from util.notebook_utils import segmentation_map_to_image, SegmentationMap, Label
     
 
     r = requests.get(
