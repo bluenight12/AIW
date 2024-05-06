@@ -16,13 +16,20 @@ def Recent_file():
 def Make_img():
     #프롬프트 TXT파일에서 가져오는 코드 만들기 
     prompt = ("")
+    with open('models/lora/blue_half_shirt/blue_half_shirt_prompt.txt', 'r') as file:
+        data = file.read()
+        start_index = data.find('prompt :') + len('prompt :')
+        end_index = data.find('Negative prompt:')
+        result = data[start_index:end_index].strip()
+    print(result)
+    prompt = (result)
     input_img_path = ("Cam.jpg")
     mask_img_path = ("mask.jpg")
     cs.Cloths_seg(input_img_path,mask_img_path)
     ap = api.Create_image()
     ap.i2i(input_img_path, mask_img_path, prompt)
-    bg_prompt = ("")
-    ap.t2i(bg_prompt)
+    # bg_prompt = ("")
+    # ap.t2i(bg_prompt)
     
 def get_color_cloth():
     con = sqlite3.connect('./db/cloth_original.db')

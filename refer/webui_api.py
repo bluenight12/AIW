@@ -107,6 +107,7 @@ class Create_image :
             "sampler_name": "DPM++ 2M",  ##  샘플링 방법을 결정하는 설정입니다.
             "scheduler": "Karras",  ## 학습 스케줄러를 설정하는 부분입니다.
             "mask": self.encode_file_to_base64(mask_img_path),
+            "inpaint_full_res_padding": 50,  ## 인페인팅 패딩을 결정하는 설정입니다.
 
         }
         self.call_img2img_api(**payload)
