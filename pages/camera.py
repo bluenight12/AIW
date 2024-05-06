@@ -3,10 +3,10 @@ import cv2
 from streamlit_extras.switch_page_button import switch_page
 from refer import age_gender as ag
 
-age_gender_bin_path = './model/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.bin'
-age_gender_xml_path = './model/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.xml'
-face_detection_bin_path = './model/face-detection-retail-0005/FP16/face-detection-retail-0005.bin'
-face_detection_xml_path = './model/face-detection-retail-0005/FP16/face-detection-retail-0005.xml'
+age_gender_bin_path = './models/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.bin'
+age_gender_xml_path = './models/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.xml'
+face_detection_bin_path = './models/face-detection-retail-0005/FP16/face-detection-retail-0005.bin'
+face_detection_xml_path = './models/face-detection-retail-0005/FP16/face-detection-retail-0005.xml'
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
