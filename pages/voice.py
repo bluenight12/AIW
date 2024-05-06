@@ -1,35 +1,30 @@
 import streamlit as st
 import speech_recognition as sr
 from streamlit_extras.switch_page_button import switch_page
+from googletrans import Translator
 
-def recognize_and_save_text(output_file):
+def recognize_and_save_text():
     # 음성 인식기 객체 생성
     recognizer = sr.Recognizer()
 
     while True:
         # 마이크로 음성 입력 받기
-        kr_audio = sr.AudioFile('wav/news.wav')
-        with kr_audio as source:
-            audio = recognizer.record(source)
-        # with sr.Microphone() as source:
-        #     recognizer.adjust_for_ambient_noise(source, duration=0)  # 배경 소음에 대한 자동 조절
-        #     print("말씀해주세요...")
-        #     try:
-        #         audio = recognizer.listen(source, timeout=1.5, phrase_time_limit=3)  # 마이크에서 음성 입력을 듣기
-        #     except sr.WaitTimeoutError:
-        #         return list("음성이 입력되지 않았습니다.")
+        with sr.Microphone() as source:
+            recognizer.adjust_for_ambient_noise(source, duration=0.5)  # 배경 소음에 대한 자동 조절
+            print("말씀해주세요...")
+            try:
+                audio = recognizer.listen(source, timeout=1.5, phrase_time_limit=3)  # 마이크에서 음성 입력을 듣기
+            except sr.WaitTimeoutError:
+                return list("음성이 입력되지 않았습니다.")
 
         # 음성을 텍스트로 변환
         try:
-            text = recognizer.recognize_wit(audio, key='QC3S7TF4MGTOXKSBLAX32VPK77RV5WDV')
+            text = recognizer.recognize_google(audio, language='ko-KR')
+            #text = recognizer.recognize_wit(audio, key='QC3S7TF4MGTOXKSBLAX32VPK77RV5WDV')
             #text = recognizer.recognize_whisper(audio, language='ko')
             
             print("음성 인식 결과:", text)
 
-            # 인식된 텍스트를 text.txt 파일에 저장
-            with open(output_file, "w") as file:
-                file.write(text)
-            print("인식된 단어를 text.txt 파일에 저장했습니다.")
             st.session_state["text"] = text
             return
 
@@ -38,19 +33,55 @@ def recognize_and_save_text(output_file):
         except sr.RequestError as e:
             return list("Google Speech Recognition 서비스에 접근할 수 없습니다; {0}".format(e))
         
+def translate_korean_to_english():
+    """
+    한국어 문장을 영어로 번역하여 결과를 파일에 저장합니다.
+
+    Args:
+    input_file (str): 한국어 문장이 있는 파일 경로.
+    output_file (str): 번역된 영어 문장을 저장할 파일 경로.
+    """
+    # Google 번역기 객체 생성
+    translator = Translator()
+
+    # 한국어 문장을 읽어와서 영어로 번역하여 저장
+    f_input = st.session_state.get('text')
+    korean_sentence = f_input.strip()
+    english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
+    print(f"번역 결과: {english_translation}")
+    st.session_state["trans_text"] = english_translation
+
+
+def extract_clothes():
+    """
+    english.txt 파일에서 'yellow', 'black', 'blue', 't-shirt', 'cote'와 같은 단어를 찾아 
+    clothes.txt 파일에 한 줄에 나열하여 저장하는 함수
+    """
+    # 'input_file_path' 파일 읽기
+    english_file = st.session_state.get('trans_text')
+    print(english_file)
+    words = english_file.split()
+    words = [i.lower() for i in words]
+    # 'output_file_path' 파일에 발견된 단어들을 한 줄에 나열하여 저장
+    st.session_state['extract_text'] = (' '.join([word for word in words if word in ['red', 'black', 'blue', '-shirt', 'green', 'man to man', 'knit', 'white', 'long sleeve']]) + '\n')        
+
+
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
-    st.title("Voice Test")
+    st.title("버튼을 누르고 원하시는 옷을 말해주세요")
     if 'text' not in st.session_state:
         st.session_state.text = ""
-    frame_placeholder = st.empty()
-    frame_placeholder.image(st.session_state.get("image"), channels='RGB')
+        st.session_state.trans_text = ""
+        st.session_state.extract_text = ""
+    # frame_placeholder = st.empty()
+    # frame_placeholder.image(st.session_state.get("image"), channels='RGB')
     text_button_pressed = st.button("음성 받기")
-    st.button("session state", on_click=(lambda a:print(a))(st.session_state['text']))
+    st.button("session state", on_click=print, args=(st.session_state['extract_text'],))
     
     if text_button_pressed:
-        recognize_and_save_text("text.txt")
-        print("exec")
+        recognize_and_save_text()
+        translate_korean_to_english()
+        extract_clothes()
         text_button_pressed = False
     
     next_page_button = st.button("넘어가기")
