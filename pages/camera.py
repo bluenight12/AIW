@@ -2,6 +2,7 @@ import streamlit as st
 import cv2
 from streamlit_extras.switch_page_button import switch_page
 from refer import age_gender as ag
+import time
 
 age_gender_bin_path = './models/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.bin'
 age_gender_xml_path = './models/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.xml'
