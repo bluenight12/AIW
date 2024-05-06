@@ -14,7 +14,7 @@ def Recent_file():
     recent_file = max(files, key=os.path.getmtime)
     return recent_file
 def Make_img():
-
+    #프롬프트 TXT파일에서 가져오는 코드 만들기 
     prompt = ("")
     input_img_path = ("Cam.jpg")
     mask_img_path = ("mask.jpg")
