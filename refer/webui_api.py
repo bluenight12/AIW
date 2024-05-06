@@ -190,7 +190,88 @@ class Create_image :
         # there exist a useful extension that allows converting of webui calls to api payload
         # particularly useful when you wish setup arguments of extensions and scripts
         # https://github.com/huchenlei/sd-webui-api-payload-display
+    def t2i(self, prompt):
+        payload = {
+            "prompt": prompt,  # extra networks also in prompts
+            "negative_prompt": "",
+            "seed": -1,
+            "steps": 20,
+            "width": 480,
+            "height": 640,
+            "cfg_scale": 7,
+            "sampler_name": "DPM++ 2M",  ##  샘플링 방법을 결정하는 설정입니다.
+            "scheduler": "Karras",  ## 학습 스케줄러를 설정하는 부분입니다.
+            "n_iter": 1,
+            "batch_size": 1,
 
+            # example args for x/y/z plot
+            # "script_name": "x/y/z plot",
+            # "script_args": [
+            #     1,
+            #     "10,20",
+            #     [],
+            #     0,
+            #     "",
+            #     [],
+            #     0,
+            #     "",
+            #     [],
+            #     True,
+            #     True,
+            #     False,
+            #     False,
+            #     0,
+            #     False
+            # ],
+
+            # example args for Refiner and ControlNet
+            # "alwayson_scripts": {
+            #     "ControlNet": {
+            #         "args": [
+            #             {
+            #                 "batch_images": "",
+            #                 "control_mode": "Balanced",
+            #                 "enabled": True,
+            #                 "guidance_end": 1,
+            #                 "guidance_start": 0,
+            #                 "image": {
+            #                     "image": encode_file_to_base64(r"B:\path\to\control\img.png"),
+            #                     "mask": None  # base64, None when not need
+            #                 },
+            #                 "input_mode": "simple",
+            #                 "is_ui": True,
+            #                 "loopback": False,
+            #                 "low_vram": False,
+            #                 "model": "control_v11p_sd15_canny [d14c016b]",
+            #                 "module": "canny",
+            #                 "output_dir": "",
+            #                 "pixel_perfect": False,
+            #                 "processor_res": 512,
+            #                 "resize_mode": "Crop and Resize",
+            #                 "threshold_a": 100,
+            #                 "threshold_b": 200,
+            #                 "weight": 1
+            #             }
+            #         ]
+            #     },
+            #     "Refiner": {
+            #         "args": [
+            #             True,
+            #             "sd_xl_refiner_1.0",
+            #             0.5
+            #         ]
+            #     }
+            # },
+            # "enable_hr": True,
+            # "hr_upscaler": "R-ESRGAN 4x+ Anime6B",
+            # "hr_scale": 2,
+            # "denoising_strength": 0.5,
+            # "styles": ['style 1', 'style 2'],
+            # "override_settings": {
+            #     'sd_model_checkpoint': "sd_xl_base_1.0",  # this can use to switch sd model
+            # },
+        }
+        self.call_txt2img_api(**payload)
 ####
 # test
 

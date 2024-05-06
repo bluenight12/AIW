@@ -19,6 +19,8 @@ def Make_img():
     cs.Cloths_seg(input_img_path,mask_img_path)
     ap = api.Create_image()
     ap.i2i(input_img_path, mask_img_path, prompt)
+    bg_prompt = ("")
+    ap.t2i(bg_prompt)
     
 def get_cloth():
     con = sqlite3.connect('./db/cloth.db')
