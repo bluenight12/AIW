@@ -5,6 +5,8 @@ import streamlit as st
 from refer import webui_api as api
 from util import Clothes_Segmentation as cs
 import time
+import sqlite3
+
 def Recent_file():
     files = glob.glob('api_out/img2img/img2img-*.png')
     recent_file = max(files, key=os.path.getmtime)
@@ -17,15 +19,20 @@ def Make_img():
     cs.Cloths_seg(input_img_path,mask_img_path)
     ap = api.Create_image()
     ap.i2i(input_img_path, mask_img_path, prompt)
+    
+def get_cloth():
+    con = sqlite3.connect('./db/cloth.db')
+    cur = con.cursor()
+
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
     st.title("Image Test")
     text = st.session_state.get("text")
     frame_placeholder = st.empty()
-    make_button_pressed = st.button("이미지 만들기",  args=("Hi",))
+    make_button_pressed = st.button("이미지 만들기")
     
     cols = st.columns(3)
-    container1 = cols[0].container(height=120)
+    container1 = cols[0].container(height=360)
     container1.write('Meow' + ' meow'*1000)
     cols[1].write('Meow' + ' meow'*1000)
     cols[2].write('Meow' + ' meow'*1000)
