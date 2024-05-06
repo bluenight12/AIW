@@ -1,6 +1,0 @@
-prompt : (((male model wearing blue color half shirt))),((high Quality, ultra realistic)) 
- <lora:blue_half_shirt:1>
-
-
-negative :
-(worst quality, greyscale), ac_neg2, zip2d_neg, ziprealism_neg, watermark, username, signature, text, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck, wrong color T-shirt, red color T-shirt, white color,black color,((no clothes image, no image)),

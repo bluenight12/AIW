@@ -1,6 +1,0 @@
-prompt : (female model wearing Light grey sweatshirt), (((Light grey))), ((women sweatshirt))
- <lora:sweater:1>
-
-
-negative :
-(worst quality, greyscale), ac_neg2, zip2d_neg, ziprealism_neg, watermark, username, signature, text, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck, (((wrong color))), red color T-shirt, white color, blue color, yellow color, green color, black color, purple color, orange color, wrong clothes, sky color, pink color, ((no clothes image, no image))
