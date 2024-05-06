@@ -23,6 +23,25 @@ def Make_img():
 def get_cloth():
     con = sqlite3.connect('./db/cloth.db')
     cur = con.cursor()
+    clothes = st.session_state['extract_text']
+    words = clothes.split()
+    print(words)
+    ctg = [word for word in words if word in [
+        '-shirt', 'long sleeve', 'man to man', 'knit']]
+    color = [word for word in words if word in [
+        'red', 'green', 'black', 'blue', 'white']]
+    if ctg == [] or color == []:
+        # 돌아가기 누르라고 해야함
+        st.title("돌아가기를 누르고 다시 입력해주세요")
+    ctg = ctg[-1]
+    color = color[-1]
+    if ctg == '-shirt':
+        ctg = 't-shirt'
+    cur.execute(
+        f'SELECT id, Image_Link FROM cloth WHERE category="{ctg}" AND color="{color}" ORDER BY RANDOM() LIMIT 3;')
+    cloth_list = cur.fetchall()
+
+    
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
@@ -31,12 +50,11 @@ def main():
     frame_placeholder = st.empty()
     make_button_pressed = st.button("이미지 만들기")
     
-    cols = st.columns(3)
-    container1 = cols[0].container(height=360)
+    cols = st.columns(2)
+    container1 = cols[0].container(height=400)
+    container2 = cols[1].container(height=400)
     container1.write('Meow' + ' meow'*1000)
-    cols[1].write('Meow' + ' meow'*1000)
-    cols[2].write('Meow' + ' meow'*1000)
-        
+    container2.write('Meow' + ' meow'*1000)
 
     if make_button_pressed:
         Make_img()

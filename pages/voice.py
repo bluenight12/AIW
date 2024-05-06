@@ -10,7 +10,7 @@ def recognize_and_save_text():
     while True:
         # 마이크로 음성 입력 받기
         with sr.Microphone() as source:
-            recognizer.adjust_for_ambient_noise(source, duration=0.5)  # 배경 소음에 대한 자동 조절
+            recognizer.adjust_for_ambient_noise(source, duration=0)  # 배경 소음에 대한 자동 조절
             print("말씀해주세요...")
             try:
                 audio = recognizer.listen(source, timeout=1.5, phrase_time_limit=3)  # 마이크에서 음성 입력을 듣기
@@ -68,26 +68,28 @@ def extract_clothes():
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
-    st.title("버튼을 누르고 원하시는 옷을 말해주세요")
+    st.markdown("<h2 style='text-align: center; color: white;'>버튼을 누르고 원하는 옷을 말해주세요</h2>", unsafe_allow_html=True)
     if 'text' not in st.session_state:
         st.session_state.text = ""
+    if 'trans_text' not in st.session_state:
         st.session_state.trans_text = ""
+    if 'extract_text' not in st.session_state:
         st.session_state.extract_text = ""
     # frame_placeholder = st.empty()
     # frame_placeholder.image(st.session_state.get("image"), channels='RGB')
     text_button_pressed = st.button("음성 받기")
-    st.button("session state", on_click=print, args=(st.session_state['extract_text'],))
-    
+        
     if text_button_pressed:
         recognize_and_save_text()
+        with st.chat_message("user"):
+            text = st.session_state.get('text')
+            st.markdown(f"<div style = text-align:center;>{text}</div>", unsafe_allow_html=True)
         translate_korean_to_english()
         extract_clothes()
-        text_button_pressed = False
-    
+
     next_page_button = st.button("넘어가기")
     if next_page_button:
         switch_page("make_image")
-        next_page_button = False
     
 if __name__ == "__main__":
     main()
