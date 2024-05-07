@@ -66,6 +66,7 @@ def extract_clothes():
     st.session_state['extract_text'] = (' '.join([word for word in words if word in ['red', 'black', 'blue', '-shirt', 'green', 'man to man', 'knit', 'white', 'shirt','long sleeve']]) + '\n')
 
 def navigate_previous():
+    switch_page("camera")
     st.rerun()
 
 

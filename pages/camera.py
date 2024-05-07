@@ -3,6 +3,7 @@ import cv2
 from streamlit_extras.switch_page_button import switch_page
 from refer import age_gender as ag
 import time
+import asyncio
 
 age_gender_bin_path = './models/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.bin'
 age_gender_xml_path = './models/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013.xml'
@@ -12,6 +13,18 @@ face_detection_xml_path = './models/face-detection-retail-0005/FP16/face-detecti
 def btn_disable(flag):
     st.session_state['btn_disable'] = flag
     
+def shutter_func():
+    btn_disable(False)
+    asyncio.run(countdown())
+    
+async def countdown():
+    count = 4
+    for i in range(5):
+        await asyncio.sleep(1)
+        with countdown_holder:
+            st.markdown(f"<h1 style = text-align:center;>{count}</h1>", unsafe_allow_html=True)
+        print(count)
+        count -= 1
 
 def main():
     st.markdown(f"<h1 style = text-align:center;>촬영을 누르고 자세를 잡아주세요</h1>", unsafe_allow_html=True)
@@ -20,7 +33,12 @@ def main():
     ### age_gender, face_detection 초기화 ###
     face_detector = ag.FaceDetection(model_bin=face_detection_bin_path, model_xml=face_detection_xml_path)
     age_gender_predictor = ag.AgeGenderPrediction(model_bin=age_gender_bin_path, model_xml=age_gender_xml_path)
-    
+    global count
+    count = ""
+    global countdown_holder
+    countdown_holder = st.empty()
+    with countdown_holder:
+        st.markdown(f"<h1 style = text-align:center;>{count}</h1>", unsafe_allow_html=True)
     frame_placeholder = st.empty()
     cols= st.columns(5)
     st.markdown(
@@ -37,6 +55,7 @@ def main():
     )
 
     with cols[0]:
+        #shutter_button_pressed = st.button("촬영", on_click=shutter_func, use_container_width=True)  # 자동 촬영으로 바꾸기
         shutter_button_pressed = st.button("촬영", on_click=btn_disable, args=(False, ), use_container_width=True)  # 자동 촬영으로 바꾸기
 
     with cols[2]:

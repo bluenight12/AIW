@@ -86,9 +86,12 @@ def get_color_cloth():
 def get_age_cloth():
     con = sqlite3.connect('./db/cloth_original.db')
     cur = con.cursor()
-
+    age = round(int(st.session_state.get("age")), -1)
+    gender = st.session_state.get("gender")
+    gender = gender.lower()
+    print(age, gender)
     cur.execute(
-        f'SELECT id, Image_Link FROM cloth WHERE age="{round(int(st.session_state.get("age")), -1)}" AND gender="{st.session_state.get("gender")}" ORDER BY RANDOM() LIMIT 5;')
+        f'SELECT id, Image_Link FROM cloth WHERE age="{age}" AND gender="{gender}" ORDER BY RANDOM() LIMIT 5;')
     cloth_list = cur.fetchall()
     return cloth_list
 
