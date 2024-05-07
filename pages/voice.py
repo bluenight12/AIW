@@ -63,20 +63,15 @@ def extract_clothes():
     words = english_file.split()
     words = [i.lower() for i in words]
     # 'output_file_path' 파일에 발견된 단어들을 한 줄에 나열하여 저장
-    st.session_state['extract_text'] = (' '.join([word for word in words if word in ['red', 'black', 'blue', '-shirt', 'green', 'man to man', 'knit', 'white', 'long sleeve', 'shirt']]) + '\n')        
+    st.session_state['extract_text'] = (' '.join([word for word in words if word in ['red', 'black', 'blue', '-shirt', 'green', 'man to man', 'knit', 'white', 'shirt','long sleeve']]) + '\n')
 
 def navigate_previous():
-    switch_page("camera")
     st.rerun()
 
 
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
-    st.markdown("""
-        <div style='display: flex; align-items: center; justify-content: center; height: 35vh;'>
-        </div>
-    """, unsafe_allow_html=True)
     #st.markdown("<h2 style='text-align: center; color: white;'>버튼을 누르고 원하는 옷을 말해주세요</h2>", unsafe_allow_html=True)
     if 'text' not in st.session_state:
         st.session_state.text = ""
@@ -126,8 +121,8 @@ def main():
     if next_page_button:
         switch_page("make_image")
     
-    if st.button("이전 페이지로 이동"):
-        navigate_previous()
+    # if st.button("이전 페이지로 이동"):
+    #     navigate_previous()
     
 if __name__ == "__main__":
     main()
