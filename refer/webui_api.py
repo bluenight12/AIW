@@ -77,7 +77,7 @@ class Create_image :
         response = self.call_api('sdapi/v1/img2img', **payload)
         print("종료")
         for index, image in enumerate(response.get('images')):
-            save_path = os.path.join(self.out_dir_i2i, f'img2img-{self.timestamp()}-{index}.png')
+            save_path = os.path.join(self.out_dir_i2i, f'img2img_{self.timestamp()}.png')
             self.decode_and_save_base64(image, save_path)
 
 
