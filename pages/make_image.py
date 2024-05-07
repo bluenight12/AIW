@@ -8,6 +8,7 @@ import time
 import sqlite3
 import numpy as np
 import requests
+from streamlit_extras.switch_page_button import switch_page
 
 def Recent_file():
     files = glob.glob('api_out/img2img/img2img-*.png')
@@ -24,9 +25,6 @@ def Make_img():
         '-shirt', 'long sleeve', 'man to man', 'knit', 'shirt']]
     color = [word for word in words if word in [
         'red', 'green', 'black', 'blue', 'white']]
-    if ctg == [] or color == []:
-        # 돌아가기 누르라고 해야함
-        st.title("돌아가기를 누르고 다시 입력해주세요")
     ctg = ctg[-1]
     color = color[-1]
     if ctg == '-shirt':
@@ -60,12 +58,14 @@ def get_color_cloth():
     words = clothes.split()
     print(words)
     ctg = [word for word in words if word in [
-        '-shirt', 'long sleeve', 'man to man', 'knit', 'shirts']]
+        '-shirt', 'long sleeve', 'man to man', 'knit', 'shirt']]
     color = [word for word in words if word in [
         'red', 'green', 'black', 'blue', 'white']]
     if ctg == [] or color == []:
         # 돌아가기 누르라고 해야함
-        st.title("돌아가기를 누르고 다시 입력해주세요")
+        st.markdown(f"<div style = text-align:center;>돌아가기</div>", unsafe_allow_html=True)
+        switch_page("voice")
+        st.rerun()
     ctg = ctg[-1]
     color = color[-1]
     if ctg == '-shirt':
@@ -92,7 +92,7 @@ def get_normal_image(url):
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
-    st.title("Image Test")
+    st.markdown(f"<h2><div style = text-align:center;>버튼을 누르고 기다려 주세요</div></h2>", unsafe_allow_html=True)
     text = st.session_state.get("text")
     global empty_space
     empty_space =  st.progress(0)

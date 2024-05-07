@@ -14,8 +14,8 @@ def btn_disable(flag):
     
 
 def main():
-    st.title("Webcam Display Steamlit App")
-    st.caption("Powered by OpenCV, Streamlit")
+    st.markdown(f"<h1 style = text-align:center;>촬영을 누르고 자세를 잡아주세요</h1>", unsafe_allow_html=True)
+    #st.caption("Powered by OpenCV, Streamlit")
     cap = cv2.VideoCapture(1)
 
     ### age_gender, face_detection 초기화 ###
@@ -23,30 +23,43 @@ def main():
     age_gender_predictor = ag.AgeGenderPrediction(model_bin=age_gender_bin_path, model_xml=age_gender_xml_path)
     
     frame_placeholder = st.empty()
-    col1, col2 = st.columns([1, 1])
+    cols= st.columns(5)
+    st.markdown(
+        """
+    <style>
+    button {
+        height: auto;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
 
-    with col1:
-        shutter_button_pressed = st.button("촬영", on_click=btn_disable, args=(False, ))  # 자동 촬영으로 바꾸기
+    with cols[0]:
+        shutter_button_pressed = st.button("촬영", on_click=btn_disable, args=(False, ), use_container_width=True)  # 자동 촬영으로 바꾸기
 
-    with col2:
-        next_button_pressed = st.button("넘어가기", disabled=st.session_state.get("btn_disable"), on_click=btn_disable, args=(True, ))
+    with cols[2]:
+        reset_button_pressed = st.button("다시 찍기", use_container_width=True)
 
-    reset_button_pressed = st.button("다시 찍기")
-
-
+    with cols[4]:
+        next_button_pressed = st.button("넘어가기", disabled=st.session_state.get("btn_disable"), on_click=btn_disable, args=(True, ), use_container_width=True)
 
     if next_button_pressed:
         switch_page("voice")
     
     while cap.isOpened():
         ret, frame = cap.read()
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         if not ret:
             st.write("Video Capture Ended")
             break
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = cv2.transpose(frame)
         frame = cv2.flip(frame, 1)
-        frame_placeholder.image(frame, channels="RGB")
+        frame_placeholder.image(frame, channels="RGB", use_column_width=True)
         if next_button_pressed:
             break
         elif shutter_button_pressed:
