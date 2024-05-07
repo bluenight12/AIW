@@ -15,12 +15,33 @@ def Recent_file():
     return recent_file
 def Make_img():
     #프롬프트 TXT파일에서 가져오는 코드 만들기 
+    con = sqlite3.connect('./db/cloth.db')
+    cur = con.cursor()
+    clothes = st.session_state['extract_text']
+    words = clothes.split()
+    print(words)
+    ctg = [word for word in words if word in [
+        '-shirt', 'long sleeve', 'man to man', 'knit', 'shirts']]
+    color = [word for word in words if word in [
+        'red', 'green', 'black', 'blue', 'white']]
+    if ctg == [] or color == []:
+        # 돌아가기 누르라고 해야함
+        st.title("돌아가기를 누르고 다시 입력해주세요")
+    ctg = ctg[-1]
+    color = color[-1]
+    if ctg == '-shirt':
+        ctg = 't-shirt'
+    cur.execute(
+        f'SELECT lora FROM clothes WHERE category="{ctg}" AND color="{color}" ORDER BY RANDOM() LIMIT 1;')
+    lora = cur.fetchall()
+    print(lora)
     prompt = ("")
-    with open('models/lora/blue_half_shirt/blue_half_shirt_prompt.txt', 'r') as file:
+    with open(lora[0][0], 'r') as file:
         data = file.read()
         start_index = data.find('prompt :') + len('prompt :')
         end_index = data.find('Negative prompt:')
         result = data[start_index:end_index].strip()
+    empty_space.progress(50)
     print(result)
     prompt = (result)
     input_img_path = ("Cam.jpg")
@@ -28,6 +49,7 @@ def Make_img():
     cs.Cloths_seg(input_img_path,mask_img_path)
     ap = api.Create_image()
     ap.i2i(input_img_path, mask_img_path, prompt)
+    empty_space.progress(100)
     # bg_prompt = ("")
     # ap.t2i(bg_prompt)
     
@@ -38,7 +60,7 @@ def get_color_cloth():
     words = clothes.split()
     print(words)
     ctg = [word for word in words if word in [
-        '-shirt', 'long sleeve', 'man to man', 'knit']]
+        '-shirt', 'long sleeve', 'man to man', 'knit', 'shirts']]
     color = [word for word in words if word in [
         'red', 'green', 'black', 'blue', 'white']]
     if ctg == [] or color == []:
@@ -72,6 +94,8 @@ def main():
     st.set_page_config(page_title="Streamlit WebCam App")
     st.title("Image Test")
     text = st.session_state.get("text")
+    global empty_space
+    empty_space =  st.progress(0)
     frame_placeholder = st.empty()
     make_button_pressed = st.button("이미지 만들기")
     
@@ -107,7 +131,10 @@ def main():
 
 
 if __name__ == "__main__":
-    st.session_state.extract_text="red t -shirt"
-    st.session_state.age='20'
-    st.session_state.gender='male'
+    if "extract_text" not in st.session_state:
+        st.session_state.extract_text="black t -shirt"
+    if "age" not in st.session_state:        
+        st.session_state.age='20'
+    if "gender" not in st.session_state:        
+        st.session_state.gender='male'
     main()

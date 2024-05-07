@@ -65,6 +65,10 @@ def extract_clothes():
     # 'output_file_path' 파일에 발견된 단어들을 한 줄에 나열하여 저장
     st.session_state['extract_text'] = (' '.join([word for word in words if word in ['red', 'black', 'blue', '-shirt', 'green', 'man to man', 'knit', 'white', 'long sleeve']]) + '\n')        
 
+def navigate_previous():
+    st.rerun()
+
+
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
@@ -90,6 +94,9 @@ def main():
     next_page_button = st.button("넘어가기")
     if next_page_button:
         switch_page("make_image")
+    
+    if st.button("이전 페이지로 이동"):
+        navigate_previous()
     
 if __name__ == "__main__":
     main()

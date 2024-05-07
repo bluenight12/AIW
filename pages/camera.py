@@ -14,7 +14,6 @@ def btn_disable(flag):
     
 
 def main():
-    st.set_page_config(page_title="Streamlit WebCam App")
     st.title("Webcam Display Steamlit App")
     st.caption("Powered by OpenCV, Streamlit")
     cap = cv2.VideoCapture(1)
@@ -33,6 +32,8 @@ def main():
         next_button_pressed = st.button("넘어가기", disabled=st.session_state.get("btn_disable"), on_click=btn_disable, args=(True, ))
 
     reset_button_pressed = st.button("다시 찍기")
+
+
 
     if next_button_pressed:
         switch_page("voice")
@@ -64,8 +65,6 @@ def main():
             st.session_state['gender'] = gender
             break
         cv2.waitKey(33)
-
-
 
 
 
