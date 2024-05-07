@@ -21,7 +21,7 @@ def Make_img():
     words = clothes.split()
     print(words)
     ctg = [word for word in words if word in [
-        '-shirt', 'long sleeve', 'man to man', 'knit', 'shirts']]
+        '-shirt', 'long sleeve', 'man to man', 'knit', 'shirt']]
     color = [word for word in words if word in [
         'red', 'green', 'black', 'blue', 'white']]
     if ctg == [] or color == []:
