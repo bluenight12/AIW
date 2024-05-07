@@ -17,7 +17,6 @@ def main():
     st.markdown(f"<h1 style = text-align:center;>촬영을 누르고 자세를 잡아주세요</h1>", unsafe_allow_html=True)
     #st.caption("Powered by OpenCV, Streamlit")
     cap = cv2.VideoCapture(1)
-
     ### age_gender, face_detection 초기화 ###
     face_detector = ag.FaceDetection(model_bin=face_detection_bin_path, model_xml=face_detection_xml_path)
     age_gender_predictor = ag.AgeGenderPrediction(model_bin=age_gender_bin_path, model_xml=age_gender_xml_path)
@@ -28,7 +27,7 @@ def main():
         """
     <style>
     button {
-        height: auto;
+        height: 100px;
         padding-top: 10px !important;
         padding-bottom: 10px !important;
     }
@@ -48,11 +47,10 @@ def main():
 
     if next_button_pressed:
         switch_page("voice")
-    
+
     while cap.isOpened():
         ret, frame = cap.read()
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
         if not ret:
             st.write("Video Capture Ended")
             break
@@ -76,8 +74,10 @@ def main():
             
             st.session_state['age'] = age
             st.session_state['gender'] = gender
+            
             break
-        cv2.waitKey(33)
+        cv2.waitKey(1)
+    cap.release()
 
 
 

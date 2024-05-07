@@ -72,23 +72,11 @@ def navigate_previous():
 
 
 def main():
-    st.set_page_config(page_title="Streamlit WebCam App")
+    st.set_page_config(page_title="Streamlit WebCam App")  
     st.markdown("""
         <div style='display: flex; align-items: center; justify-content: center; height: 35vh;'>
         </div>
     """, unsafe_allow_html=True)
-    #st.markdown("<h2 style='text-align: center; color: white;'>버튼을 누르고 원하는 옷을 말해주세요</h2>", unsafe_allow_html=True)
-    if 'text' not in st.session_state:
-        st.session_state.text = ""
-    if 'trans_text' not in st.session_state:
-        st.session_state.trans_text = ""
-    if 'extract_text' not in st.session_state:
-        st.session_state.extract_text = ""
-    frame_placeholder = st.empty()
-    with frame_placeholder:
-        with st.chat_message("ai"):
-            st.markdown(f"<div style = text-align:center;>버튼을 누르고 원하는 옷을 말해주세요</div>", unsafe_allow_html=True)
-    # frame_placeholder.image(st.session_state.get("image"), channels='RGB')
     st.markdown(
         """
     <style>
@@ -101,6 +89,21 @@ def main():
     """,
         unsafe_allow_html=True,
     )
+    if st.button("이전 페이지로 이동"):
+        navigate_previous()
+    #st.markdown("<h2 style='text-align: center; color: white;'>버튼을 누르고 원하는 옷을 말해주세요</h2>", unsafe_allow_html=True)
+    if 'text' not in st.session_state:
+        st.session_state.text = ""
+    if 'trans_text' not in st.session_state:
+        st.session_state.trans_text = ""
+    if 'extract_text' not in st.session_state:
+        st.session_state.extract_text = ""
+    frame_placeholder = st.empty()
+    with frame_placeholder:
+        with st.chat_message("ai"):
+            st.markdown(f"<div style = text-align:center;>버튼을 누르고 원하는 옷을 말해주세요</div>", unsafe_allow_html=True)
+    # frame_placeholder.image(st.session_state.get("image"), channels='RGB')
+    
     cols = st.columns(6)
     with cols[1]:
         text_button_pressed = st.button("음성 받기", use_container_width=True)
@@ -126,8 +129,6 @@ def main():
     if next_page_button:
         switch_page("make_image")
     
-    if st.button("이전 페이지로 이동"):
-        navigate_previous()
     
 if __name__ == "__main__":
     main()
