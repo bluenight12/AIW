@@ -80,6 +80,7 @@ def main():
         if next_button_pressed:
             break
         elif shutter_button_pressed:
+            
             cv2.imwrite("Cam.jpg", cv2.resize(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR), (480, 640)))
             st.session_state.image = frame
             faces = face_detector.run(frame)
