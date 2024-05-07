@@ -123,9 +123,7 @@ def main():
 
     if next_page_button:
         switch_page("make_image")
-    
-    if st.button("이전 페이지로 이동"):
-        navigate_previous()
+
     
 if __name__ == "__main__":
     main()
