@@ -16,24 +16,25 @@ from notebook_utils import load_image, download_file
 
 def Mix_img():
     import sys
-    sys.path.append('C:\\Users\\admin\\Documents\\test_git\\AIW')    
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))  # 상위 디렉토리 추가
+
     from models.u2net import U2NET, U2NETP
 
     # Import local modules
-    MODEL_DIR = "C:\\Users\\admin\\Documents\\test_git\\AIW\\model"
+    MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', 'models')  # 모델 디렉토리 상대 경로로 수정
     
     if not Path("./notebook_utils.py").exists():
         # Fetch `notebook_utils` module
 
         r = requests.get(
-            url="https://raw.githubusercontent.com/openvinotoolkit/openvino_notebooks/latest/utils/notebook_utils.py",directory="C:\\Users\\admin\\Documents\\test_git\\AIW\\models"
+            url="https://raw.githubusercontent.com/openvinotoolkit/openvino_notebooks/latest/utils/notebook_utils.py", directory=MODEL_DIR  # 모델 디렉토리로 수정
         )
 
         open("notebook_utils.py", "w").write(r.text)
 
     if not Path("./model/u2net.py").exists():
         download_file(
-            url="https://raw.githubusercontent.com/openvinotoolkit/openvino_notebooks/latest/notebooks/vision-background-removal/model/u2net.py", directory="C:\\Users\\admin\\Documents\\test_git\\AIW\\models"
+            url="https://raw.githubusercontent.com/openvinotoolkit/openvino_notebooks/latest/notebooks/vision-background-removal/model/u2net.py", directory=MODEL_DIR  # 모델 디렉토리로 수정
     )
 
 
@@ -62,7 +63,7 @@ def Mix_img():
     u2net_model = u2net_lite
 
     # 모델 파일의 경로 지정
-    model_path = Path("C:/Users/admin/Documents/test_git/AIW/models/u2net_lite/u2net_lite.pth")
+    model_path = Path(os.path.join(MODEL_DIR, 'u2net_lite', 'u2net_lite.pth'))  # 모델 디렉토리 상대 경로로 수정
 
     if not model_path.exists():
 
@@ -83,7 +84,7 @@ def Mix_img():
     model_ir = ov.convert_model(net, example_input=torch.zeros((1, 3, 512, 512)), input=([1, 3, 512, 512]))
 
     # Load image path
-    IMAGE_URI = "C:\\Users\\admin\\Documents\\test_git\\AIW\\img\\removed_background.jpg"
+    IMAGE_URI = os.path.join(os.path.dirname(__file__), '..', 'img', 'removed_background.jpg')  # 이미지 경로 상대 경로로 수정
 
     input_mean = np.array([123.675, 116.28, 103.53]).reshape(1, 3, 1, 1)
     input_scale = np.array([58.395, 57.12, 57.375]).reshape(1, 3, 1, 1)
@@ -140,7 +141,7 @@ def Mix_img():
         a.axis("off")
 
     # Load BG_image path
-    BACKGROUND_FILE = "C:\\Users\\admin\\Documents\\test_git\\AIW\\img\\bg_img.jpg"
+    BACKGROUND_FILE = os.path.join(os.path.dirname(__file__), '..', 'img', 'bg_img.jpg')  # 배경 이미지 경로 상대 경로로 수정
     
     background_image = cv2.cvtColor(src=load_image(BACKGROUND_FILE), code=cv2.COLOR_BGR2RGB)
     background_image = cv2.resize(src=background_image, dsize=(image.shape[1], image.shape[0]))
@@ -151,7 +152,7 @@ def Mix_img():
     new_image = background_image + bg_removed_result
 
     # Save the generated image.
-    new_image_path = "C:\\Users\\admin\\Documents\\test_git\\AIW\\img\\new_img.png"
+    new_image_path = os.path.join(os.path.dirname(__file__), '..', 'img', 'new_img.png')  # 새로운 이미지 경로 상대 경로로 수정
     cv2.imwrite(filename=str(new_image_path), img=cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
    
