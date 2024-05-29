@@ -1,7 +1,8 @@
 import streamlit as st
 import speech_recognition as sr
 from streamlit_extras.switch_page_button import switch_page
-from googletrans import Translator
+from translate import Translator
+from util import Cloth_Recommendation as cr
 
 def recognize_and_save_text():
     # 음성 인식기 객체 생성
@@ -42,14 +43,15 @@ def translate_korean_to_english():
     output_file (str): 번역된 영어 문장을 저장할 파일 경로.
     """
     # Google 번역기 객체 생성
-    translator = Translator()
+    translator= Translator(from_lang= "ko",to_lang="en")
 
     # 한국어 문장을 읽어와서 영어로 번역하여 저장
     f_input = st.session_state.get('text')
     korean_sentence = f_input.strip()
-    english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
-    print(f"번역 결과: {english_translation}")
-    st.session_state["trans_text"] = english_translation
+    translation = translator.translate(korean_sentence)
+    # english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
+    print(f"번역 결과: {translation}")
+    st.session_state["trans_text"] = translation
 
 
 def extract_clothes():
@@ -64,6 +66,22 @@ def extract_clothes():
     words = [i.lower() for i in words]
     # 'output_file_path' 파일에 발견된 단어들을 한 줄에 나열하여 저장
     st.session_state['extract_text'] = (' '.join([word for word in words if word in ['red', 'black', 'blue', '-shirt', 'green', 'man to man', 'knit', 'white', 'shirt','long sleeve']]) + '\n')
+
+
+
+class llm_clothes_Recommend:
+    def __init__(self):
+        self.clothes_re = cr.Cloth_Recommendations('./db/cloth(2).csv')
+    def Recommend(self):
+        text = st.session_state.get('trans_text')
+        # # 추천 갯수
+        print(text)
+        num_recommendations = 5
+        cloth , clothes = self.clothes_re.Recommendations(text,num_recommendations)
+        print(clothes)
+        st.session_state.llm_clothes_list = clothes
+        st.session_state.llm_cloth = cloth
+
 
 def navigate_previous():
     switch_page("camera")
@@ -95,6 +113,7 @@ def main():
     # if st.button("이전 페이지로 이동"):
     #     navigate_previous()
     #st.markdown("<h2 style='text-align: center; color: white;'>버튼을 누르고 원하는 옷을 말해주세요</h2>", unsafe_allow_html=True)
+    lcr = llm_clothes_Recommend()
     if 'text' not in st.session_state:
         st.session_state.text = ""
     if 'trans_text' not in st.session_state:
@@ -122,7 +141,8 @@ def main():
                     text = st.session_state.get('text')
                     st.markdown(f"<div style = font-size:30px;text-align:center;>{text}</div>", unsafe_allow_html=True)
                 translate_korean_to_english()
-                extract_clothes()
+                # extract_clothes()
+                lcr.Recommend()
                 st.session_state["text"] = ""
         else:
             with frame_placeholder:
@@ -134,4 +154,8 @@ def main():
 
     
 if __name__ == "__main__":
+    if "llm_clothes_list" not in st.session_state:
+        st.session_state.llm_clothes_list = ""
+    if "llm_cloth" not in st.session_state:
+        st.session_state.llm_cloth = ""
     main()
