@@ -20,7 +20,7 @@ def main():
             </div>
         </div>
     """, unsafe_allow_html=True)
-    files = glob.glob('api_out/img2img/img2img_*.png')
+    files = glob.glob('api_out/img2img/img2img-0-*.png')
     recent_file = natsorted(seq=files, reverse=True)[0]
     print(recent_file)
     image_path = recent_file

@@ -1,7 +1,11 @@
 import streamlit as st
 import speech_recognition as sr
 from streamlit_extras.switch_page_button import switch_page
-from googletrans import Translator
+from translate import Translator
+from util import bg_Segmentation as bs
+from refer import webui_api as api
+import glob
+from natsort import natsorted
 import cv2
 
 def recognize_and_save_text():
@@ -43,14 +47,18 @@ def translate_korean_to_english():
     output_file (str): 번역된 영어 문장을 저장할 파일 경로.
     """
     # Google 번역기 객체 생성
-    translator = Translator()
+    translator = Translator(from_lang="ko", to_lang="en")
+
+    # 한국어 문장을 읽어와서 영어로 번역하여 저장
+
 
     # 한국어 문장을 읽어와서 영어로 번역하여 저장
     f_input = st.session_state.get('bg_text')
     korean_sentence = f_input.strip()
-    english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
-    print(f"번역 결과: {english_translation}")
-    st.session_state["bg_trans_text"] = english_translation
+    translation = translator.translate(korean_sentence)
+    # english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
+    print(f"번역 결과: {translation}")
+    st.session_state["bg_trans_text"] = translation
 
 
 def navigate_previous():
@@ -59,10 +67,22 @@ def navigate_previous():
 
 def make_img(holder, bar):
     # t2i, st.session_state의 bg_trans_text가 영문으로 된 음성 세션입니다.
+
+    image_path = st.session_state.get('cloth_gen_image_path')
+    bg_mask_path = 'img/bg_mask.png'
+    prompt = st.session_state.get('bg_trans_text')
+    bg_prompt = f"background : {prompt}"
+    bs.bg_seg(image_path, bg_mask_path)
+    ap = api.Create_image()
+    ap.i2i(image_path, bg_mask_path, bg_prompt)
+
     print("이미지 생성 후 저장")
     bar.progress(50)
     #holder 는 테스트용 Cam.jpg 불러오는 코드입니다.
-    test = cv2.cvtColor(cv2.imread('Cam.jpg'), cv2.COLOR_BGR2RGB)
+    bg_gen_file = glob.glob('api_out/img2img/img2img-0-*.png')
+    bg_gen_recent_file = natsorted(seq=bg_gen_file, reverse=True)[0]
+    bg_gen_image_path = bg_gen_recent_file
+    test = cv2.cvtColor(cv2.imread(bg_gen_image_path), cv2.COLOR_BGR2RGB)
     holder.image(test, channels="RGB", use_column_width=True)
     st.session_state.final_image = test
     bar.progress(100)
@@ -98,6 +118,13 @@ def main():
         st.session_state.trans_text = ""
     if 'extract_text' not in st.session_state:
         st.session_state.extract_text = ""
+    ###
+    ### 배경을 여러번 바꿀시 기존이미지 경로가 최신경로가 아니게 됨으로 여기에서 경로를 임시로 지정했습니다.
+    cloth_generation_files = glob.glob('api_out/img2img/img2img-0-*.png')
+    recent_file = natsorted(seq=cloth_generation_files, reverse=True)[0]
+    cloth_generation_image_path = recent_file
+    st.session_state.cloth_gen_image_path = cloth_generation_image_path
+    ###
     frame_placeholder = st.empty()
     with frame_placeholder:
         with st.chat_message("ai"):
@@ -142,6 +169,8 @@ if __name__ == "__main__":
         st.session_state.bg_text = ""
     if "bg_trans_text" not in st.session_state:
         st.session_state.bg_trans_text = ""
+    if "cloth_gen_image_path" not in st.session_state:
+        st.session_state.cloth_gen_image_path = ""
     if "final_image" not in st.session_state:
         st.session_state.final_image = ""
     main()
