@@ -30,7 +30,6 @@ def Make_img():
     cs.Cloths_seg(input_img_path,mask_img_path)
     ap = api.Create_image()
     ap.i2i(input_img_path, mask_img_path, prompt)
-    empty_space.progress(100)
     # bg_prompt = ("")
     # ap.t2i(bg_prompt)
 
@@ -46,20 +45,6 @@ def main():
 
     st.markdown(f"<h1 style = text-align:center;>QR코드를 스캔하시면<br>이미지를 가져가실 수 있어요 !</h1>", unsafe_allow_html=True)
     text = st.session_state.get("text")
-    global empty_space
-    
-    st.markdown(
-    """
-    <style>
-    button {
-        height: 100px;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
-    }
-    </style>
-    """,
-        unsafe_allow_html=True,
-    )
     imgur_client = Imgur({"client_id": "57caf94e3b6438c"})
     #image = imgur_client.image_upload(os.path.realpath('./image.png'), 'Untitled', 'My first image upload')
     #image_id = image['response']['data']['id']
