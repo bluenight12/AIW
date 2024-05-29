@@ -91,20 +91,22 @@ def main():
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = holistic.process(frame)
             if results.pose_landmarks:
-                right_hand = (int(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_PINKY].x * frame.shape[1]),
+                left_hand = (int(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_PINKY].x * frame.shape[1]),
                                     int(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_PINKY].y * frame.shape[0]))
-                left_hand = (int(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_PINKY].x * frame.shape[1]),
+                right_hand = (int(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_PINKY].x * frame.shape[1]),
                                 int(results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_PINKY].y * frame.shape[0]))
-                
-                right_elbow = int(
-                    results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_ELBOW].y * frame.shape[0])
-                left_elbow = int(
-                    results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_ELBOW].y * frame.shape[0])
 
-                left = 50
-                right = 430
+                left_shoulder = int(
+                    results.pose_landmarks.landmark[mp_holistic.PoseLandmark.LEFT_SHOULDER].y * frame.shape[0])
+                right_shoulder = int(
+                    results.pose_landmarks.landmark[mp_holistic.PoseLandmark.RIGHT_SHOULDER].y * frame.shape[0])
+                
+                left = 80
+                right = 400
                 print(left_hand[1], right_hand[1])
-                if 0 < right_hand[1] < left and right < left_hand[1] < 480:
+                #print(left_hand[1], right_hand[1])
+                #if 0 < right_hand[1] < left and right < left_hand[1] < 480:
+                if right_hand[1] > right_shoulder and left_hand[1] < left_shoulder:
                     flag = True
                 else:
                     flag = False
@@ -140,7 +142,7 @@ def main():
                         st.markdown(f"<h1 style = text-align:center;>{math.ceil(5 - (time.time() - photo_time))}</h1>", unsafe_allow_html=True)
             else:
                 with countdown_holder:
-                    st.markdown(f"<h1 style = text-align:center;>{''}</h1>", unsafe_allow_html=True)
+                    st.markdown(f"<h1 style = text-align:center;>{'손을 어깨 밖으로 위치해주세요 !'}</h1>", unsafe_allow_html=True)
                 photo_time = 0
 
             if next_button_pressed:
@@ -160,8 +162,11 @@ def main():
                 
                 st.session_state['age'] = age
                 st.session_state['gender'] = gender
-                
+
+                btn_disable(False)
+                st.rerun()
                 break
+            
             cv2.waitKey(1)
     cap.release()
 

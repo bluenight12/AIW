@@ -73,6 +73,7 @@ def get_color_cloth():
     if ctg == [] or color == []:
         # 돌아가기 누르라고 해야함
         st.title("돌아가기를 누르고 다시 입력해주세요")
+        return
     print(ctg)
     print(color)
     ctg = ctg[-1]
@@ -104,6 +105,13 @@ def get_normal_image(url):
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")
+    st.markdown("""
+        <div style='text-align: left;'>
+            <a href="/voice" target="_self">
+                <button style='background-color: #0068c9; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-size: 16px; cursor: pointer; height:50px'>이전으로</button>
+            </a>
+        </div>
+    """, unsafe_allow_html=True)
     st.markdown(f"<h1 style = text-align:center;>버튼을 누르고 기다려주세요</h1>", unsafe_allow_html=True)
     text = st.session_state.get("text")
     global empty_space
@@ -128,19 +136,19 @@ def main():
             st.markdown(f"<div style = text-align:center;>다른 추천 옷들도 둘러보세요~</div>", unsafe_allow_html=True)
     color_list = get_color_cloth()
     color_cloth_list = []
-    
-    for j in range(len(color_list)):
-        i = get_normal_image(color_list[j][1])
-        i = cv2.resize(i, (300, 400), interpolation=cv2.INTER_LANCZOS4)
-        color_cloth_list.append(i)
+    if color_list is not None:
+        for j in range(len(color_list)):
+            i = get_normal_image(color_list[j][1])
+            i = cv2.resize(i, (300, 400), interpolation=cv2.INTER_LANCZOS4)
+            color_cloth_list.append(i)
         
     age_list = get_age_cloth()
     age_cloth_list = []
-    
-    for j in range(len(age_list)):
-        i = get_normal_image(age_list[j][1])
-        i = cv2.resize(i, (300, 400), interpolation=cv2.INTER_LANCZOS4)
-        age_cloth_list.append(i)
+    if age_list is not None:
+        for j in range(len(age_list)):
+            i = get_normal_image(age_list[j][1])
+            i = cv2.resize(i, (300, 400), interpolation=cv2.INTER_LANCZOS4)
+            age_cloth_list.append(i)
 
     container1 = cols[0].container(height=600)
     container2 = cols[1].container(height=600)
@@ -153,7 +161,7 @@ def main():
     
     with btn_cols[4]:
         if st.button("결과 보기"):
-            switch_page("final_page")
+            switch_page("edit_page")
             st.rerun()
         
     if make_button_pressed:

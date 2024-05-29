@@ -1,6 +1,7 @@
 import streamlit as st
 import glob
 from natsort import natsorted
+from streamlit_extras.switch_page_button import switch_page
 import qrcode
 import cv2
 
@@ -32,12 +33,17 @@ def main():
     myqr.save(stream='qr_code.png')
     img = cv2.imread('qr_code.png')
     i = cv2.resize(img, dsize=(140, 140), interpolation=cv2.INTER_LANCZOS4)
-    col1, col2 = st.columns([1,1])
+    col1, col2, col3 = st.columns([1,1,1])
     with col1:
-        st.markdown(f"<div style =' text-align:center; justify-content: center; font-size:40px; '>옷 정보 링크 >> </div>", unsafe_allow_html=True)
+        st.markdown(f"<div style =' text-align:center; justify-content: center; font-size:40px; '>옷 정보 링크</div>", unsafe_allow_html=True)
     with col2:
         st.image(i)
-
+    with col3:
+        bg_button = st.button("배경 합성하기")
+    
+    if bg_button:
+        switch_page("bg_voice")
+        st.rerun()
     
 if __name__ == "__main__":
     main()
