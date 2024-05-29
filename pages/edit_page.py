@@ -9,7 +9,7 @@ def main():
     st.markdown("""
             <div style='text-align: left;'>
                 <a href="/" target="_self">
-                    <button style='background-color: #0068c9; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-size: 16px; cursor: pointer;'>처음으로</button>
+                    <button style='background-color: #0068c9; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-size: 16px; cursor: pointer; height: 50px;'>처음으로</button>
                 </a>
             </div>
     """, unsafe_allow_html=True)
@@ -24,6 +24,19 @@ def main():
     recent_file = natsorted(seq=files, reverse=True)[0]
     print(recent_file)
     image_path = recent_file
+    st.markdown(
+        """
+    <style>
+    .element-container:nth-of-type(1) button {
+        height: 100px;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        background-color: #baed91;
+    }
+    </style>
+    """,
+        unsafe_allow_html=True,
+    )
 
     image = st.image(image_path, use_column_width=True)
     
@@ -35,7 +48,7 @@ def main():
     i = cv2.resize(img, dsize=(140, 140), interpolation=cv2.INTER_LANCZOS4)
     col1, col2, col3 = st.columns([1,1,1])
     with col1:
-        st.markdown(f"<div style =' text-align:center; justify-content: center; font-size:40px; '>옷 정보 링크</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style = text-align:center;justify-content:center;font-size:40px; >옷 정보 링크</div>", unsafe_allow_html=True)
     with col2:
         st.image(i)
     with col3:

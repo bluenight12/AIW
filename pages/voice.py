@@ -73,6 +73,13 @@ def navigate_previous():
 
 def main():
     st.set_page_config(page_title="Streamlit WebCam App")  
+    st.markdown("""
+        <div style='text-align: left;'>
+            <a href="/camera" target="_self">
+                <button style='background-color: #0068c9; color: white; padding: 10px 20px; border-radius: 5px; border: none; font-size: 16px; cursor: pointer; height: 50px'>이전으로</button>
+            </a>
+        </div>
+    """, unsafe_allow_html=True)
     st.markdown(
         """
     <style>
@@ -85,8 +92,8 @@ def main():
     """,
         unsafe_allow_html=True,
     )
-    if st.button("이전 페이지로 이동"):
-        navigate_previous()
+    # if st.button("이전 페이지로 이동"):
+    #     navigate_previous()
     #st.markdown("<h2 style='text-align: center; color: white;'>버튼을 누르고 원하는 옷을 말해주세요</h2>", unsafe_allow_html=True)
     if 'text' not in st.session_state:
         st.session_state.text = ""
@@ -97,7 +104,7 @@ def main():
     frame_placeholder = st.empty()
     with frame_placeholder:
         with st.chat_message("ai"):
-            st.markdown(f"<div style = text-align:center;>버튼을 누르고 원하는 옷을 말해주세요</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style = font-size:30px;text-align:center;>버튼을 누르고 원하는 옷을 말해주세요</div>", unsafe_allow_html=True)
     # frame_placeholder.image(st.session_state.get("image"), channels='RGB')
     
     cols = st.columns(6)
@@ -113,14 +120,14 @@ def main():
             with frame_placeholder:
                 with st.chat_message("user"):
                     text = st.session_state.get('text')
-                    st.markdown(f"<div style = text-align:center;>{text}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style = font-size:30px;text-align:center;>{text}</div>", unsafe_allow_html=True)
                 translate_korean_to_english()
                 extract_clothes()
                 st.session_state["text"] = ""
         else:
             with frame_placeholder:
                 with st.chat_message("ai"):
-                    st.markdown(f"<div style = text-align:center;>다시 한 번 말해주세요</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style = font-size:30px;text-align:center;>다시 한 번 말해주세요</div>", unsafe_allow_html=True)
 
     if next_page_button:
         switch_page("make_image")

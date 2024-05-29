@@ -9,6 +9,7 @@ import sqlite3
 import numpy as np
 import requests
 from streamlit_extras.switch_page_button import switch_page
+from imgur_python import Imgur
 
 def Recent_file():
     files = glob.glob('api_out/img2img/img2img_*.png')
@@ -43,7 +44,7 @@ def main():
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown(f"<h1 style = text-align:center;>버튼을 누르고 기다려주세요</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style = text-align:center;>QR코드를 스캔하시면<br>이미지를 가져가실 수 있어요 !</h1>", unsafe_allow_html=True)
     text = st.session_state.get("text")
     global empty_space
     
@@ -59,7 +60,10 @@ def main():
     """,
         unsafe_allow_html=True,
     )
-    
+    imgur_client = Imgur({"client_id": "57caf94e3b6438c"})
+    #image = imgur_client.image_upload(os.path.realpath('./image.png'), 'Untitled', 'My first image upload')
+    #image_id = image['response']['data']['id']
+    #print(image_id)
     cols = st.columns(2)
     place_holder = st.empty()
     with place_holder:
@@ -68,25 +72,7 @@ def main():
         
     frame_holder = st.empty()
 
-    empty_space =  st.progress(0)
-    btn_cols = st.columns(6)
-    with btn_cols[1]:
-        make_button_pressed = st.button("이미지\n\n 만들기", key="make_button", use_container_width=True)
-    
-    with btn_cols[4]:
-        if st.button("결과 보기"):
-            switch_page("edit_page")
-            st.rerun()
-        
-    if make_button_pressed:
-        Make_img()
-        with place_holder:
-            with st.chat_message("ai"):
-                st.markdown(f"<div style = text-align:center;>다 만들었으니 결과로 넘어가주세요!</div>", unsafe_allow_html=True)
-        # image = cv2.imread(Recent_file())
-        # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        # frame_placeholder.image(image, channels="RGB")
-        pass
+    frame_holder.image(st.session_state.get("final_image"), channels="RGB", use_column_width=True)
 
 
 if __name__ == "__main__":

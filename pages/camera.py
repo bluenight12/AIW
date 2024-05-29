@@ -106,7 +106,7 @@ def main():
                 print(left_hand[1], right_hand[1])
                 #print(left_hand[1], right_hand[1])
                 #if 0 < right_hand[1] < left and right < left_hand[1] < 480:
-                if right_hand[1] > right_shoulder and left_hand[1] < left_shoulder:
+                if 480 > right_hand[1] > right_shoulder and 0 <left_hand[1] < left_shoulder:
                     flag = True
                 else:
                     flag = False

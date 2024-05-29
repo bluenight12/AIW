@@ -71,8 +71,7 @@ def get_color_cloth():
     color = [word for word in words if word in [
         'red', 'green', 'black', 'blue', 'white']]
     if ctg == [] or color == []:
-        # 돌아가기 누르라고 해야함
-        st.title("돌아가기를 누르고 다시 입력해주세요")
+        #st.title("돌아가기를 누르고 다시 입력해주세요")
         return
     print(ctg)
     print(color)
@@ -133,7 +132,7 @@ def main():
     place_holder = st.empty()
     with place_holder:
         with st.chat_message("ai"):
-            st.markdown(f"<div style = text-align:center;>다른 추천 옷들도 둘러보세요~</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style = font-size:30px;text-align:center;>다른 추천 옷들도 둘러보세요~</div>", unsafe_allow_html=True)
     color_list = get_color_cloth()
     color_cloth_list = []
     if color_list is not None:
