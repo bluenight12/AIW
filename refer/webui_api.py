@@ -16,7 +16,7 @@ https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/7784
 
 """
 __author__ = "song-si-kyeong"
-__date__ = "2024-05-20"
+__date__ = "2024-05-30"
 
 from datetime import datetime
 import urllib3
@@ -30,7 +30,7 @@ import os
 
 class Create_image :
     def __init__(self):
-        self.webui_server_url = 'http://61.108.166.16:7860'
+        self.webui_server_url = 'http://127.0.0.1:7860'
         self.http = urllib3.PoolManager()
         self.out_dir = 'api_out'
         self.out_dir_t2i = os.path.join(self.out_dir, 'txt2img')
@@ -69,15 +69,15 @@ class Create_image :
     def call_txt2img_api(self, **payload):
         response = self.call_api('sdapi/v1/txt2img', **payload)
         for index, image in enumerate(response.get('images',[])):
-            save_path = os.path.join(self.out_dir_t2i, f'txt2img-{self.timestamp()}-{index}.png')
+            save_path = os.path.join(self.out_dir_t2i, f'txt2img-{index}-{self.timestamp()}.png')
             self.decode_and_save_base64(image, save_path)
 
 
     def call_img2img_api(self, **payload):
         response = self.call_api('sdapi/v1/img2img', **payload)
         print("종료")
-        for index, image in enumerate(response.get('images')):
-            save_path = os.path.join(self.out_dir_i2i, f'img2img_{self.timestamp()}.png')
+        for index, image in enumerate(response.get('images', [])):
+            save_path = os.path.join(self.out_dir_i2i, f'img2img-{index}-{self.timestamp()}.png')
             self.decode_and_save_base64(image, save_path)
 
 
@@ -95,11 +95,11 @@ class Create_image :
             "prompt": prom,
             "negative_prompt": "(worst quality, greyscale), ac_neg2, zip2d_neg, ziprealism_neg, watermark, username, signature, text, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck",
             "seed": -1,                         ## 시드 난수로
-            "steps": 40,
+            "steps": 10,
             "width": 480,
             "height": 640,
             # "image_cfg_scale": 0.5,
-            "denoising_strength": 0.7,          ## 이수치를 줄이면 기존이미지와 많이 멀어짐 .
+            "denoising_strength": 0.9,          ## 이수치를 줄이면 기존이미지와 많이 멀어짐 .
             "n_iter": 1,
             "init_images": init_images,
             "batch_size": batch_size if len(init_images) == 1 else len(init_images),
@@ -114,13 +114,14 @@ class Create_image :
             controlnet_payload = {
                 "args": [
                     {
-                        "input_image": self.encode_file_to_base64(controlnet_img_path),
+                        "image": self.encode_file_to_base64(controlnet_img_path),
                         "model": "control_v11p_sd15_openpose",
                         "module": "openpose",
                         "weight": 1.0,
                         "guidance_start": 0,
                         "guidance_end": 1,
                         "pixel_perfect": False,
+                        # "control_mode": "Balanced"
                     }
                 ]
             }
