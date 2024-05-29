@@ -16,7 +16,7 @@ https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/7784
 
 """
 __author__ = "song-si-kyeong"
-__date__ = "2024-05-04"
+__date__ = "2024-05-20"
 
 from datetime import datetime
 import urllib3
@@ -81,7 +81,7 @@ class Create_image :
             self.decode_and_save_base64(image, save_path)
 
 
-    def i2i(self, input_img_path, mask_img_path,prompt_txt ):
+    def i2i(self, input_img_path, mask_img_path, prompt_txt, controlnet_img_path=None):
 
         input_img = input_img_path
         init_images = [
@@ -110,6 +110,21 @@ class Create_image :
             "inpaint_full_res_padding": 50,  ## 인페인팅 패딩을 결정하는 설정입니다.
 
         }
+        if controlnet_img_path:
+            controlnet_payload = {
+                "args": [
+                    {
+                        "input_image": self.encode_file_to_base64(controlnet_img_path),
+                        "model": "control_v11p_sd15_openpose",
+                        "module": "openpose",
+                        "weight": 1.0,
+                        "guidance_start": 0,
+                        "guidance_end": 1,
+                        "pixel_perfect": False,
+                    }
+                ]
+            }
+            payload["alwayson_scripts"] = {"ControlNet": controlnet_payload}
         self.call_img2img_api(**payload)
         #     {
         #   "prompt": "",               ## 이미지 생성에 사용되는 초기 텍스트 프롬프트입니다.
@@ -191,7 +206,7 @@ class Create_image :
         # there exist a useful extension that allows converting of webui calls to api payload
         # particularly useful when you wish setup arguments of extensions and scripts
         # https://github.com/huchenlei/sd-webui-api-payload-display
-    def t2i(self, prompt):
+    def t2i(self, prompt, controlnet_img_path=None):
         payload = {
             "prompt": prompt,  # extra networks also in prompts
             "negative_prompt": "",
@@ -272,10 +287,25 @@ class Create_image :
             #     'sd_model_checkpoint': "sd_xl_base_1.0",  # this can use to switch sd model
             # },
         }
+        if controlnet_img_path:
+            controlnet_payload = {
+                "args": [
+                    {
+                        "input_image": self.encode_file_to_base64(controlnet_img_path),
+                        "model": "control_v11p_sd15_openpose",
+                        "module": "openpose",
+                        "weight": 1.0,
+                        "guidance_start": 0,
+                        "guidance_end": 1,
+                        "pixel_perfect": False,
+                    }
+                ]
+            }
+            payload["alwayson_scripts"] = {"ControlNet": controlnet_payload}
         self.call_txt2img_api(**payload)
 ####
 # test
 
 # aa = Create_image()
 #
-# aa.i2i(".\\1.jpg",".\\1.png","t-shirt")
+# aa.i2i("Cam.jpg","mask.jpg","t-shirt","Cam.jpg")
