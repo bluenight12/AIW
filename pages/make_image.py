@@ -36,6 +36,7 @@ def Make_img():
     color = color[-1]
     if ctg == '-shirt':
         ctg = 't-shirt'
+    print(color, ctg)
     cur.execute(
         f'SELECT lora, Product_link FROM clothes WHERE category="{ctg}" AND color="{color}" ORDER BY RANDOM() LIMIT 1;')
     lora = cur.fetchall()
@@ -174,5 +175,5 @@ if __name__ == "__main__":
     if "gender" not in st.session_state:        
         st.session_state.gender='male'
     if "link" not in st.session_state:
-        st.session_state.link=''
+        st.session_state.link=' '
     main()

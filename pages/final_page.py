@@ -15,7 +15,7 @@ def main():
     st.markdown("""
         <div style='display: flex; align-items: center; justify-content: center;'>
             <div style='text-align: center;'>
-                <h1>최종 결과입니다</h1>
+                <h1>합성 결과입니다</h1>
             </div>
         </div>
     """, unsafe_allow_html=True)

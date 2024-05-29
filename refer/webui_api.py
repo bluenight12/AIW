@@ -30,7 +30,7 @@ import os
 
 class Create_image :
     def __init__(self):
-        self.webui_server_url = 'http://127.0.0.1:7860'
+        self.webui_server_url = 'http://61.108.166.16:7860'
         self.http = urllib3.PoolManager()
         self.out_dir = 'api_out'
         self.out_dir_t2i = os.path.join(self.out_dir, 'txt2img')
