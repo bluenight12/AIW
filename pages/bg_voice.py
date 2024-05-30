@@ -1,9 +1,10 @@
 import streamlit as st
 import speech_recognition as sr
 from streamlit_extras.switch_page_button import switch_page
-from translate import Translator
+from googletrans import Translator
 from util import bg_Segmentation as bs
 from refer import webui_api as api
+# from models.change_background import ChangeBackground as cb
 import glob
 from natsort import natsorted
 import cv2
@@ -47,7 +48,7 @@ def translate_korean_to_english():
     output_file (str): 번역된 영어 문장을 저장할 파일 경로.
     """
     # Google 번역기 객체 생성
-    translator = Translator(from_lang="ko", to_lang="en")
+    translator = Translator()
 
     # 한국어 문장을 읽어와서 영어로 번역하여 저장
 
@@ -55,10 +56,10 @@ def translate_korean_to_english():
     # 한국어 문장을 읽어와서 영어로 번역하여 저장
     f_input = st.session_state.get('bg_text')
     korean_sentence = f_input.strip()
-    translation = translator.translate(korean_sentence)
-    # english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
-    print(f"번역 결과: {translation}")
-    st.session_state["bg_trans_text"] = translation
+    # translation = translator.translate(korean_sentence)
+    english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
+    print(f"번역 결과: {english_translation}")
+    st.session_state["bg_trans_text"] = english_translation
 
 
 def navigate_previous():
@@ -86,6 +87,23 @@ def make_img(holder, bar):
     holder.image(test, channels="RGB", use_column_width=True)
     st.session_state.final_image = test
     bar.progress(100)
+
+    # #####
+    # prompt = st.session_state.get('bg_trans_text')
+    # bg_gen = api.Create_image()
+    # bg_gen.t2i(prompt)
+    # bar.progress(50)
+    # background_files = glob.glob('api_out/txt2img/txt2img-*.png')
+    # recent_file = natsorted(seq=background_files, reverse=True)[0]
+    # background_image_path = recent_file
+    # test = cv2.cvtColor(cv2.imread(background_image_path), cv2.COLOR_BGR2RGB)
+    #
+    # background_changer = cb(image_path, background_image_path, "final_image.png")
+    # holder.image(background_changer, channels="RGB", use_column_width=True)
+    # bar.progress(100)
+
+
+
 
 
 def main():

@@ -1,7 +1,7 @@
 import streamlit as st
 import speech_recognition as sr
 from streamlit_extras.switch_page_button import switch_page
-from translate import Translator
+from googletrans import Translator
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.docstore.document import Document
@@ -45,15 +45,15 @@ def translate_korean_to_english():
     output_file (str): 번역된 영어 문장을 저장할 파일 경로.
     """
     # Google 번역기 객체 생성
-    translator= Translator(from_lang= "ko",to_lang="en")
+    translator= Translator()
 
     # 한국어 문장을 읽어와서 영어로 번역하여 저장
     f_input = st.session_state.get('text')
     korean_sentence = f_input.strip()
-    translation = translator.translate(korean_sentence)
-    # english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
-    print(f"번역 결과: {translation}")
-    st.session_state["trans_text"] = translation
+    # translation = translator.translate(korean_sentence)
+    english_translation = translator.translate(korean_sentence, src='ko', dest='en').text
+    print(f"번역 결과: {english_translation}")
+    st.session_state["trans_text"] = english_translation
 
 
 def extract_clothes():
@@ -71,11 +71,12 @@ def extract_clothes():
 
 
 def llm_clothes_Recommend():
-    api_key = 'your_api'
+    api_key = 'your-api'
 
     # OpenAI 임베딩 생성
     text = st.session_state.get('trans_text')
     embeddings = OpenAIEmbeddings(openai_api_key=api_key)
+    print(text)
 
     # 미리만들어둔 "./chroma_db" 에서 불러옴
     # chroma_db는 util의 Cloth_Reconmendation.py 에서 생성 가능
@@ -87,13 +88,14 @@ def llm_clothes_Recommend():
     query_embedding = embeddings.embed_query(query_text)
     # 임베딩을 기반으로 ChromaDB에서 가장 유사한 아이템 검색
     results = db3.similarity_search_by_vector(embedding=query_embedding, k=5)
+    print(results)
     cloth_list1 = [(doc.metadata['Product_id'], doc.metadata['Image_Link'], doc.metadata['Product_Link'],
                           doc.metadata['prompt']) for
                          doc in results]
     cloth_list2 = [(doc.metadata['Product_id'], doc.metadata['Image_Link']) for
                           doc in results]
-    # print(cloth_list2)
-    # print(cloth_list1)
+    print(cloth_list2)
+    print(cloth_list1)
 
     st.session_state.llm_cloth = cloth_list1
     st.session_state.llm_clothes_list = cloth_list2
