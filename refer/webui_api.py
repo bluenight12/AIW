@@ -30,7 +30,7 @@ import os
 
 class Create_image :
     def __init__(self):
-        self.webui_server_url = 'https://b0aef346bec2e1e2ac.gradio.live'
+        self.webui_server_url = 'https://7f74261249a17a33eb.gradio.live'
         self.http = urllib3.PoolManager()
         self.out_dir = 'api_out'
         self.out_dir_t2i = os.path.join(self.out_dir, 'txt2img')
@@ -117,8 +117,9 @@ class Create_image :
                         "enabled": True,
                         "image": self.encode_file_to_base64(controlnet_img_path),
                         "model": "control_v11p_sd15_openpose",
-                        "module": "openpose",
+                        "module": "dw_openpose_full",
                         "weight": 1.0,
+                        # "preprocessor": "dw_openpose_full",
                         "guidance_start": 0,
                         "guidance_end": 1,
                         "pixel_perfect": False,
