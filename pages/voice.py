@@ -82,18 +82,21 @@ def llm_clothes_Recommend():
     # chroma_db는 util의 Cloth_Reconmendation.py 에서 생성 가능
     # 업데이트시 반듯이 ./chroma_db 를 디렉토리를 삭제하고 생성할것
     # 이유는 db가 내용이 중첩되서 최종적으로 검색결과가 똑같은게 나오게됨
+    progress_bar.progress(50)
     db3 = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
     query_text = f"<strong>{text}</strong>."
     # print(type(query_text))
     query_embedding = embeddings.embed_query(query_text)
     # 임베딩을 기반으로 ChromaDB에서 가장 유사한 아이템 검색
     results = db3.similarity_search_by_vector(embedding=query_embedding, k=5)
+
     print(results)
     cloth_list1 = [(doc.metadata['Product_id'], doc.metadata['Image_Link'], doc.metadata['Product_Link'],
                           doc.metadata['prompt']) for
                          doc in results]
     cloth_list2 = [(doc.metadata['Product_id'], doc.metadata['Image_Link']) for
                           doc in results]
+    progress_bar.progress(100)
     print(cloth_list2)
     print(cloth_list1)
 
@@ -142,7 +145,8 @@ def main():
         with st.chat_message("ai"):
             st.markdown(f"<div style = font-size:30px;text-align:center;>버튼을 누르고 원하는 옷을 말해주세요</div>", unsafe_allow_html=True)
     # frame_placeholder.image(st.session_state.get("image"), channels='RGB')
-    
+    global progress_bar
+    progress_bar = st.progress(0)
     cols = st.columns(6)
     with cols[1]:
         text_button_pressed = st.button("음성 받기", use_container_width=True)
@@ -156,7 +160,7 @@ def main():
             with frame_placeholder:
                 with st.chat_message("user"):
                     text = st.session_state.get('text')
-                    st.markdown(f"<div style = font-size:30px;text-align:center;>{text}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style = font-size:30px;text-align:center;>{text}<p>텍스트에 유사한 옷을 찾고 있습니다...</div>", unsafe_allow_html=True)
                 translate_korean_to_english()
                 # extract_clothes()
 
