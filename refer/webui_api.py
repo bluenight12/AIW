@@ -30,7 +30,7 @@ import os
 
 class Create_image :
     def __init__(self):
-        self.webui_server_url = 'http://127.0.0.1:7860'
+        self.webui_server_url = 'https://7f74261249a17a33eb.gradio.live'
         self.http = urllib3.PoolManager()
         self.out_dir = 'api_out'
         self.out_dir_t2i = os.path.join(self.out_dir, 'txt2img')
@@ -95,7 +95,7 @@ class Create_image :
             "prompt": prom,
             "negative_prompt": "(worst quality, greyscale), ac_neg2, zip2d_neg, ziprealism_neg, watermark, username, signature, text, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, bad feet, extra fingers, mutated hands, poorly drawn hands, bad proportions, extra limbs, disfigured, bad anatomy, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, mutated hands, fused fingers, too many fingers, long neck",
             "seed": -1,                         ## 시드 난수로
-            "steps": 10,
+            "steps": 150,
             "width": 480,
             "height": 640,
             # "image_cfg_scale": 0.5,
@@ -103,7 +103,7 @@ class Create_image :
             "n_iter": 1,
             "init_images": init_images,
             "batch_size": batch_size if len(init_images) == 1 else len(init_images),
-            "cfg_scale": 7,
+            "cfg_scale": 12,
             "sampler_name": "DPM++ 2M",  ##  샘플링 방법을 결정하는 설정입니다.
             "scheduler": "Karras",  ## 학습 스케줄러를 설정하는 부분입니다.
             "mask": self.encode_file_to_base64(mask_img_path),
@@ -114,14 +114,16 @@ class Create_image :
             controlnet_payload = {
                 "args": [
                     {
+                        "enabled": True,
                         "image": self.encode_file_to_base64(controlnet_img_path),
                         "model": "control_v11p_sd15_openpose",
-                        "module": "openpose",
+                        "module": "dw_openpose_full",
                         "weight": 1.0,
+                        # "preprocessor": "dw_openpose_full",
                         "guidance_start": 0,
                         "guidance_end": 1,
                         "pixel_perfect": False,
-                        # "control_mode": "Balanced"
+                        "control_mode": "Balanced"
                     }
                 ]
             }
@@ -212,7 +214,7 @@ class Create_image :
             "prompt": prompt,  # extra networks also in prompts
             "negative_prompt": "",
             "seed": -1,
-            "steps": 20,
+            "steps": 40,
             "width": 480,
             "height": 640,
             "cfg_scale": 7,
@@ -292,7 +294,8 @@ class Create_image :
             controlnet_payload = {
                 "args": [
                     {
-                        "input_image": self.encode_file_to_base64(controlnet_img_path),
+                        "enabled": True,
+                        "image": self.encode_file_to_base64(controlnet_img_path),
                         "model": "control_v11p_sd15_openpose",
                         "module": "openpose",
                         "weight": 1.0,
@@ -306,7 +309,7 @@ class Create_image :
         self.call_txt2img_api(**payload)
 ####
 # test
-
+#
 # aa = Create_image()
 #
-# aa.i2i("Cam.jpg","mask.jpg","t-shirt","Cam.jpg")
+# aa.i2i("../Cam.jpg","../mask.jpg","t-shirt","../Cam.jpg")

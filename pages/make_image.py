@@ -56,7 +56,9 @@ def Make_img():
     cloth_list = st.session_state.get('llm_cloth')
     # print(cloth_list[0][3])
     prompt = cloth_list[0][3]
-    print(prompt)
+    st.session_state.link = cloth_list[0][2]
+    # 프롬포트
+    # print(prompt)
     #####################
     input_img_path = ("Cam.jpg")
     mask_img_path = ("mask.jpg")
@@ -94,8 +96,8 @@ def get_color_cloth():
     # print(cloth_list)
     new_cloth_list = cloth_list[1:]
 
-    print("여기가 뉴")
-    print(new_cloth_list)
+    # print("여기가 뉴")
+    # print(new_cloth_list)
 
 
     return new_cloth_list
@@ -106,11 +108,11 @@ def get_age_cloth():
     age = round(int(st.session_state.get("age")), -1)
     gender = st.session_state.get("gender")
     gender = gender.lower()
-    print(age, gender)
+    # print(age, gender)
     cur.execute(
         f'SELECT id, Image_Link FROM cloth WHERE age="{age}" AND gender="{gender}" ORDER BY RANDOM() LIMIT 5;')
     cloth_list = cur.fetchall()
-    print(cloth_list)
+    # print(cloth_list)
     return cloth_list
 
 def get_normal_image(url):

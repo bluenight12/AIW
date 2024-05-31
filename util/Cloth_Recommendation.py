@@ -54,7 +54,7 @@ class Cloth_Recommendations:
                              doc in results]
         extracted_results2 = [(doc.metadata['Product_id'], doc.metadata['Image_Link']) for
                              doc in results]
-        self.vectorstore.delete_collection()
+
         # return  results
         return extracted_results , extracted_results2
 
