@@ -20,10 +20,11 @@ def main():
             </div>
         </div>
     """, unsafe_allow_html=True)
-    files = glob.glob('api_out/img2img/img2img-0-*.png')
-    recent_file = natsorted(seq=files, reverse=True)[0]
-    print(recent_file)
-    image_path = recent_file
+    # files = glob.glob('api_out/img2img/img2img-0-*.png')
+    # recent_file = natsorted(seq=files, reverse=True)[0]
+    # print(recent_file)
+    # image_path = recent_file
+    image_path = st.session_state.get('cloth_gen_image_path')
     st.markdown(
         """
     <style>
