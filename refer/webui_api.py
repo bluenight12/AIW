@@ -30,7 +30,7 @@ import os
 
 class Create_image :
     def __init__(self):
-        self.webui_server_url = 'https://7f74261249a17a33eb.gradio.live'
+        self.webui_server_url = 'https://b2646a893253a64b27.gradio.live'
         self.http = urllib3.PoolManager()
         self.out_dir = 'api_out'
         self.out_dir_t2i = os.path.join(self.out_dir, 'txt2img')
@@ -103,7 +103,7 @@ class Create_image :
             "n_iter": 1,
             "init_images": init_images,
             "batch_size": batch_size if len(init_images) == 1 else len(init_images),
-            "cfg_scale": 12,
+            "cfg_scale": 7,
             "sampler_name": "DPM++ 2M",  ##  샘플링 방법을 결정하는 설정입니다.
             "scheduler": "Karras",  ## 학습 스케줄러를 설정하는 부분입니다.
             "mask": self.encode_file_to_base64(mask_img_path),

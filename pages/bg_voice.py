@@ -138,10 +138,10 @@ def main():
         st.session_state.extract_text = ""
     ###
     ### 배경을 여러번 바꿀시 기존이미지 경로가 최신경로가 아니게 됨으로 여기에서 경로를 임시로 지정했습니다.
-    cloth_generation_files = glob.glob('api_out/img2img/img2img-0-*.png')
-    recent_file = natsorted(seq=cloth_generation_files, reverse=True)[0]
-    cloth_generation_image_path = recent_file
-    st.session_state.cloth_gen_image_path = cloth_generation_image_path
+    # cloth_generation_files = glob.glob('api_out/img2img/img2img-0-*.png')
+    # recent_file = natsorted(seq=cloth_generation_files, reverse=True)[0]
+    # cloth_generation_image_path = recent_file
+    # st.session_state.cloth_gen_image_path = cloth_generation_image_path
     ###
     frame_placeholder = st.empty()
     with frame_placeholder:
@@ -187,8 +187,6 @@ if __name__ == "__main__":
         st.session_state.bg_text = ""
     if "bg_trans_text" not in st.session_state:
         st.session_state.bg_trans_text = ""
-    if "cloth_gen_image_path" not in st.session_state:
-        st.session_state.cloth_gen_image_path = ""
     if "final_image" not in st.session_state:
         st.session_state.final_image = ""
     main()
