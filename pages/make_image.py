@@ -1,5 +1,6 @@
 import os
 import glob
+from natsort import natsorted
 import cv2
 import streamlit as st
 from refer import webui_api as api
@@ -65,6 +66,11 @@ def Make_img():
     cs.Cloths_seg(input_img_path,mask_img_path)
     ap = api.Create_image()
     ap.i2i(input_img_path, mask_img_path, prompt, input_img_path)
+    ### 경로 저장
+    cloth_generation_files = glob.glob('api_out/img2img/img2img-0-*.png')
+    recent_file = natsorted(seq=cloth_generation_files, reverse=True)[0]
+    cloth_generation_image_path = recent_file
+    st.session_state.cloth_gen_image_path = cloth_generation_image_path
     empty_space.progress(100)
     #######################
     # bg_prompt = ("")
@@ -202,5 +208,7 @@ if __name__ == "__main__":
         st.session_state.gender='male'
     if "link" not in st.session_state:
         st.session_state.link=' '
+    if "cloth_gen_image_path" not in st.session_state:
+        st.session_state.cloth_gen_image_path = ""
 
     main()
