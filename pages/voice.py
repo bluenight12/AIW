@@ -71,7 +71,7 @@ def extract_clothes():
 
 
 def llm_clothes_Recommend():
-    api_key = 'your-api'
+    api_key = 'code'
 
     # OpenAI 임베딩 생성
     text = st.session_state.get('trans_text')

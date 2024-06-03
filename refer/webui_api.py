@@ -30,7 +30,7 @@ import os
 
 class Create_image :
     def __init__(self):
-        self.webui_server_url = 'https://b2646a893253a64b27.gradio.live'
+        self.webui_server_url = 'https://296909d0f710e23ee7.gradio.live'
         self.http = urllib3.PoolManager()
         self.out_dir = 'api_out'
         self.out_dir_t2i = os.path.join(self.out_dir, 'txt2img')

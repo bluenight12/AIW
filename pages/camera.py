@@ -31,7 +31,7 @@ async def countdown():
         count -= 1
 
 def main():
-    st.markdown(f"<h1 style = text-align:center;>촬영을 누르고 자세를 잡아주세요</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 style = text-align:center;>자세를 잡아주세요</h1>", unsafe_allow_html=True)
     #st.caption("Powered by OpenCV, Streamlit")
     cap = cv2.VideoCapture(cv2.CAP_V4L2)
     mp_holistic = mp.solutions.holistic
@@ -66,11 +66,13 @@ def main():
     )
 
     with cols[0]:
-        shutter_button_pressed = st.button("촬영", on_click=shutter_func, use_container_width=True)  # 자동 촬영으로 바꾸기
+        #shutter_button_pressed = st.button("촬영", on_click=shutter_func, use_container_width=True)  # 자동 촬영으로 바꾸기
         #shutter_button_pressed = st.button("촬영", on_click=btn_disable, args=(False, ), use_container_width=True)  # 자동 촬영으로 바꾸기
+        reset_button_pressed = st.button("다시 찍기", use_container_width=True)
 
     with cols[2]:
-        reset_button_pressed = st.button("다시 찍기", use_container_width=True)
+        #reset_button_pressed = st.button("다시 찍기", use_container_width=True)
+        shutter_button_pressed = st.empty()
 
     with cols[4]:
         next_button_pressed = st.button("넘어가기", disabled=st.session_state.get("btn_disable"), on_click=btn_disable, args=(True, ), use_container_width=True)
@@ -147,25 +149,25 @@ def main():
 
             if next_button_pressed:
                 break
-            elif shutter_button_pressed:
+            # elif shutter_button_pressed:
                 
-                cv2.imwrite("Cam.jpg", cv2.resize(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR), (480, 640)))
-                st.session_state.image = frame
-                faces = face_detector.run(frame)
-                try:
-                    age, gender = age_gender_predictor.run(faces)
+            #     cv2.imwrite("Cam.jpg", cv2.resize(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR), (480, 640)))
+            #     st.session_state.image = frame
+            #     faces = face_detector.run(frame)
+            #     try:
+            #         age, gender = age_gender_predictor.run(faces)
                 
-                except ValueError as e:
-                    raise ValueError("Image is empty") from e
-                except cv2.error as e:
-                    print(e)
+            #     except ValueError as e:
+            #         raise ValueError("Image is empty") from e
+            #     except cv2.error as e:
+            #         print(e)
                 
-                st.session_state['age'] = age
-                st.session_state['gender'] = gender
+            #     st.session_state['age'] = age
+            #     st.session_state['gender'] = gender
 
-                btn_disable(False)
-                st.rerun()
-                break
+            #     btn_disable(False)
+            #     st.rerun()
+            #     break
             
             cv2.waitKey(1)
     cap.release()

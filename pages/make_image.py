@@ -50,7 +50,7 @@ def Make_img():
     #     start_index = data.find('prompt :') + len('prompt :')
     #     end_index = data.find('Negative prompt:')
     #     result = data[start_index:end_index].strip()
-    # empty_space.progress(50)
+    empty_space.progress(50)
     # print(result)
     # prompt = (result)
 
@@ -114,7 +114,7 @@ def get_age_cloth():
     age = round(int(st.session_state.get("age")), -1)
     gender = st.session_state.get("gender")
     gender = gender.lower()
-    # print(age, gender)
+    print(age, gender)
     cur.execute(
         f'SELECT id, Image_Link FROM cloth WHERE age="{age}" AND gender="{gender}" ORDER BY RANDOM() LIMIT 5;')
     cloth_list = cur.fetchall()
@@ -173,7 +173,7 @@ def main():
             i = get_normal_image(age_list[j][1])
             i = cv2.resize(i, (300, 400), interpolation=cv2.INTER_LANCZOS4)
             age_cloth_list.append(i)
-
+    
     container1 = cols[0].container(height=600)
     container2 = cols[1].container(height=600)
     container1.image(color_cloth_list, channels='BGR')

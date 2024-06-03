@@ -68,7 +68,7 @@ def navigate_previous():
 
 def make_img(holder, bar):
     # t2i, st.session_state의 bg_trans_text가 영문으로 된 음성 세션입니다.
-
+    bar.progress(50)
     image_path = st.session_state.get('cloth_gen_image_path')
     bg_mask_path = 'img/bg_mask.png'
     prompt = st.session_state.get('bg_trans_text')
@@ -78,7 +78,7 @@ def make_img(holder, bar):
     ap.i2i(image_path, bg_mask_path, bg_prompt)
 
     print("이미지 생성 후 저장")
-    bar.progress(50)
+    
     #holder 는 테스트용 Cam.jpg 불러오는 코드입니다.
     bg_gen_file = glob.glob('api_out/img2img/img2img-0-*.png')
     bg_gen_recent_file = natsorted(seq=bg_gen_file, reverse=True)[0]
