@@ -1,5 +1,5 @@
 # AIW
-의류 매장에 등록되어 있는 옷들을 바탕으로 옷을 데이터베이스에 넣어 LLM을 통해 추천을 받아 그와 비슷한 옷을 입혀주고 배경을 바꾸고 싶다면 배경까지 바꿔서 본인의 의상 착용샷을 보여주는 의류 매장 AI 키오스크
+의류 매장에 등록되어 있는 옷들을 바탕으로 옷을 데이터베이스에 넣고, LLM을 통해 추천을 받아 그와 비슷한 옷을 입혀주고 마지막으로 배경을 바꾸고 싶다면 가상 의류 시작 사진에 배경을 바꿔 보여주는 의류 매장 AI 키오스크
 
 ## 프로젝트 소개
 ![그림18](https://github.com/bluenight12/AIW/assets/154478957/744b96c2-16f9-440e-842e-3213e350e0c1)
@@ -12,8 +12,8 @@
 ## 기능 
 
 ### Computer Vision
-* [face-detection](https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/face-detection-retail-0005) : 사용자의 연령및 성별 인식전 얼굴을 크롭하는 기능
-* [age-gender]( https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/age-gender-recognition-retail-0013) : 사용자의 연령및 성별을 인식하는 기능
+* [face-detection](https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/face-detection-retail-0005) : 사용자의 연령 및 성별 인식을 정확하게 할 수 있도록 얼굴을 크롭하는 기능
+* [age-gender]( https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/age-gender-recognition-retail-0013) : 사용자의 연령 및 성별을 인식하는 기능
 * [tflite-selfie-segmentation](https://github.com/openvinotoolkit/openvino_notebooks/blob/latest/notebooks/tflite-selfie-segmentation/tflite-selfie-segmentation.ipynb): 배경, 헤어, 얼굴, 의상, 신체, 기타 로 이미지의 마스크를 생성하는 기능
 * [mediapie_pose_landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker?hl=ko): 사진 촬영시 자세 제안 기능 
 
@@ -25,11 +25,11 @@
 
 ### stable-diffusion-webui을 이용한 가상 의류 시착
 
-촬영된 사진과 마스크된 이미지를 통해 stable-diffusion-webui-api를 통해 의류 시착 이미지를 생성합니다. 이때 LLM으로 추천된 의상을 prompt와 LoRa를 통해 의류를 고정합니다. 추가로 controlnet을 사용해 생성된 이미지가 자세가 이상해지는것을 방지합니다.
+촬영된 사진과 마스크된 이미지를 통해 stable-diffusion-webui-api를 통해 의류 시착 이미지를 생성합니다. 이때 LLM으로 추천된 의상의 prompt와 Fine-tuning된 LoRa 모델을 통해 의류를 고정합니다. 추가로 controlnet을 사용해 생성된 이미지의 자세를 고정시킵니다. 
 
 ### 배경생성 
 
-생선된 시착이미지를 마스크된 이미지를 통해 배경을 생성합니다.
+생성된 시착이미지를 마스크된 이미지를 통해 배경을 생성합니다.
 
 ---
 ## Prerequite
