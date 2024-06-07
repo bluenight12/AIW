@@ -13,7 +13,7 @@
 
 ### Computer Vision
 * [face-detection](https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/face-detection-retail-0005) : 사용자의 연령 및 성별 인식을 정확하게 할 수 있도록 얼굴을 크롭하는 기능
-* [age-gender]( https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/age-gender-recognition-retail-0013) : 사용자의 연령 및 성별을 인식하는 기능
+* [age-gender-recognition]( https://github.com/openvinotoolkit/open_model_zoo/tree/master/models/intel/age-gender-recognition-retail-0013) : 사용자의 연령 및 성별을 인식하는 기능
 * [tflite-selfie-segmentation](https://github.com/openvinotoolkit/openvino_notebooks/blob/latest/notebooks/tflite-selfie-segmentation/tflite-selfie-segmentation.ipynb): 배경, 헤어, 얼굴, 의상, 신체, 기타 로 이미지의 마스크를 생성하는 기능
 * [mediapie_pose_landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker?hl=ko): 사진 촬영시 자세 제안 기능 
 
